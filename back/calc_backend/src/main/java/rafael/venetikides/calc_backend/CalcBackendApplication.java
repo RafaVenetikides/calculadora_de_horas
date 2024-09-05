@@ -15,7 +15,9 @@ public class CalcBackendApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(CalcBackendApplication.class, args);
 
-		Periodo periodo = new Periodo();
+		LocalTime cargaHoraria = LocalTime.of(8, 0);
+
+		Periodo periodo = new Periodo(cargaHoraria);
 
 		LocalTime h1 = LocalTime.of(12,00);
 		LocalDate d1 = LocalDate.of(2024, 9, 04);
@@ -33,9 +35,11 @@ public class CalcBackendApplication {
 
 		System.out.println(periodo);
 
-		periodo.sortPeriodo();
+		periodo.ordenaPeriodo();
 
 		System.out.println(periodo);
+
+		System.out.println(periodo.calculaHorasTrabalhadas());
 	}
 
 }
