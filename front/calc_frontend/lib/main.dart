@@ -19,22 +19,22 @@ class MainApp extends StatelessWidget {
                   Container(
                     width: 500,
                     alignment: Alignment.center,
-                    child: Text('Hello'),
+                    child: const Text('Hello'),
                     ),
                     Container(
                       width: 500,
                       alignment: Alignment.center,
-                      child: Text('World'),
+                      child: const Text('World'),
                     ),
                 ],
               ),
-              Column(
+              const Column(
                 children: [
                   Text('Hello'),
                   Text('World'),
                 ],
               ),
-              Column(
+              const Column(
                 children: [
                   Text('Hello'),
                   Text('World'),
@@ -42,7 +42,7 @@ class MainApp extends StatelessWidget {
               ),
             ],
           ),
-          Row(
+          const Row(
             children: [
               Text('Hello'),
               Text('World'),
