@@ -2,9 +2,12 @@ package rafael.venetikides.calc_backend.classes;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.time.LocalTime;
 import java.time.temporal.TemporalUnit;
 import java.time.temporal.ChronoUnit;
+import java.time.Duration;
+import java.time.LocalDate;
 
 public class Periodo implements Iterable<Horario>{
 
@@ -20,6 +23,10 @@ public class Periodo implements Iterable<Horario>{
         this.cargaHoraria = cargaHoraria;
     }
 
+    
+    /** 
+     * @return ArrayList<Horario>
+     */
     public ArrayList<Horario> getMarcacoes() {
         return marcacoes;
     }
@@ -32,8 +39,15 @@ public class Periodo implements Iterable<Horario>{
         this.cargaHoraria = cargaHoraria;
     }
     
-    public void addMarcacao(Horario horario){
-        marcacoes.add(horario);
+    public void addMarcacao(Integer hora, Integer minuto, Integer dia, Integer mes, Integer ano){
+        marcacoes.add(criaHorario(hora, minuto, dia, mes, ano));
+    }
+
+    public Horario criaHorario(Integer hora, Integer minuto, Integer dia, Integer mes, Integer ano){
+        LocalTime h = LocalTime.of(hora,minuto);
+		LocalDate d = LocalDate.of(ano,mes,dia);
+
+		return new Horario(h, d);
     }
 
     public void ordenaPeriodo(){
@@ -60,22 +74,29 @@ public class Periodo implements Iterable<Horario>{
         return s.toString();
     }
 
-    public LocalTime calculaHorasTrabalhadas(){
+    // public LocalTime calculaHorasTrabalhadas(){
 
-        Iterator<Horario> i = iterator();
-        LocalTime horasTrabalhadas = LocalTime.of(0, 0);
-
-        while(i.hasNext()){
-            Horario entrada = i.next();
-
-            if(i.hasNext()){
-                Horario saida = i.next();
-                
-                horasTrabalhadas.plus(entrada.getHora().until(saida.getHora(), ChronoUnit.HOURS));
-            }
-        }
-        
-        return horasTrabalhadas;
-    }
+    //     Iterator<Horario> i = iterator();
+    //     Duration horasTrabalhadas = Duration;
     
-}
+    //     while(i.hasNext()){
+    //         Horario entrada = i.next();
+            
+    //         if(i.hasNext()){
+    //             Horario saida = i.next();
+
+                
+    //         }
+    //     }
+        
+    //     return horasTrabalhadas;
+    //     }
+    }
+
+    // retornaTrabalhada(marcacoes.get(1), marcacoes.get(0));
+
+    // public Long retornaTrabalhada(Long saida, Long entrada){
+    //     return saida - entrada;
+    // }
+    
+

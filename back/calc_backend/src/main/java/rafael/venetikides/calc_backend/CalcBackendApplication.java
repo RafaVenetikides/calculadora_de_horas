@@ -19,27 +19,15 @@ public class CalcBackendApplication {
 
 		Periodo periodo = new Periodo(cargaHoraria);
 
-		LocalTime h1 = LocalTime.of(12,00);
-		LocalDate d1 = LocalDate.of(2024, 9, 04);
+		System.out.println("\n\n");
 
-		Horario hour1 = new Horario(h1, d1);
-
-		periodo.addMarcacao(hour1);
-
-		LocalTime h2 = LocalTime.of(8,00);
-		LocalDate d2 = LocalDate.of(2024, 9, 04);
-
-		Horario hour2 = new Horario(h2, d2);
-
-		periodo.addMarcacao(hour2);
-
-		System.out.println(periodo);
+		// System.out.println(periodo);
 
 		periodo.ordenaPeriodo();
 
 		System.out.println(periodo);
 
-		System.out.println(periodo.calculaHorasTrabalhadas());
+		// System.out.println(periodo.calculaHorasTrabalhadas());
 	}
 
 }
