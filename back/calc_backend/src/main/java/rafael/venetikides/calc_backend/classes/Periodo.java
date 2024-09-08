@@ -1,26 +1,25 @@
 package rafael.venetikides.calc_backend.classes;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
-import java.time.LocalTime;
-import java.time.temporal.TemporalUnit;
-import java.time.temporal.ChronoUnit;
-import java.time.Duration;
-import java.time.LocalDate;
+import java.util.ListIterator;
 
 public class Periodo implements Iterable<Horario>{
 
     ArrayList<Horario> marcacoes;
-    LocalTime cargaHoraria;
+    Duration cargaHoraria;
+    Duration tolerance;
 
     /*
      * Construtor da classe de Periodos.
      * Uma lista de Horarios marcados no dia.
      */
-    public Periodo(LocalTime cargaHoraria){
+    public Periodo(Duration cargaHoraria){
         this.marcacoes = new ArrayList<>();
         this.cargaHoraria = cargaHoraria;
+        this.tolerance = Duration.ofMinutes(10);
     }
 
     
@@ -31,12 +30,20 @@ public class Periodo implements Iterable<Horario>{
         return marcacoes;
     }
 
-    public LocalTime getCargaHoraria() {
+    public Duration getCargaHoraria() {
         return cargaHoraria;
     }
 
-    public void setCargaHoraria(LocalTime cargaHoraria) {
+    public void setCargaHoraria(Duration cargaHoraria) {
         this.cargaHoraria = cargaHoraria;
+    }
+
+    public Duration getTolerance() {
+        return tolerance;
+    }
+
+    public void setTolerance(int tolerance) {
+        this.tolerance = Duration.ofMinutes(tolerance);
     }
     
     public void addMarcacao(Integer hora, Integer minuto, Integer dia, Integer mes, Integer ano){
@@ -44,10 +51,9 @@ public class Periodo implements Iterable<Horario>{
     }
 
     public Horario criaHorario(Integer hora, Integer minuto, Integer dia, Integer mes, Integer ano){
-        LocalTime h = LocalTime.of(hora,minuto);
-		LocalDate d = LocalDate.of(ano,mes,dia);
+        LocalDateTime m = LocalDateTime.of(ano, mes, dia, hora, minuto);
 
-		return new Horario(h, d);
+		return new Horario(m);
     }
 
     public void ordenaPeriodo(){
@@ -65,38 +71,99 @@ public class Periodo implements Iterable<Horario>{
         Iterator<Horario> i = iterator();
         while(i.hasNext()){
             Horario horario = i.next();
-            s.append(horario.toString()); 
-            
+            s.append(horario.hourToString()); 
+
             if(i.hasNext()){ 
                 s.append(" | ");
             }
         }
+        s.append("\n");
+
+        Iterator<Horario> j = iterator();
+        while(j.hasNext()){
+            Horario horario = j.next();
+            s.append(horario.dataToString());
+
+            if(j.hasNext()){
+                s.append(" | ");
+            }
+        }
+
         return s.toString();
     }
 
-    // public LocalTime calculaHorasTrabalhadas(){
+    public Duration calculaHorasTrabalhadas(){
 
-    //     Iterator<Horario> i = iterator();
-    //     Duration horasTrabalhadas = Duration;
+        Iterator<Horario> i = iterator();
+        Duration horasTrabalhadas = Duration.ZERO;
+        Duration essePeriodo;
     
-    //     while(i.hasNext()){
-    //         Horario entrada = i.next();
+        while(i.hasNext()){
+            Horario entrada = i.next();
             
-    //         if(i.hasNext()){
-    //             Horario saida = i.next();
-
+            if(i.hasNext()){
+                Horario saida = i.next();
                 
-    //         }
-    //     }
-        
-    //     return horasTrabalhadas;
-    //     }
+                essePeriodo = Duration.between(entrada.getMarcacao(), saida.getMarcacao());
+                horasTrabalhadas = horasTrabalhadas.plus(essePeriodo);
+            }
+        }
+        return horasTrabalhadas;
+    }
+    
+    public Duration calculaSaldo(){
+        Duration horasTrabalhadas = calculaHorasTrabalhadas();
+
+        if (horasTrabalhadas.compareTo(cargaHoraria.minus(tolerance)) < 0){
+            return cargaHoraria.minus(horasTrabalhadas);
+
+        } else if(horasTrabalhadas.compareTo(cargaHoraria.plus(tolerance)) > 0){
+            return horasTrabalhadas.minus(cargaHoraria);
+
+        } else{
+            return Duration.ZERO;
+        }
     }
 
-    // retornaTrabalhada(marcacoes.get(1), marcacoes.get(0));
+    public String getSaldo(){
+        StringBuilder s = new StringBuilder();
+        Duration saldo = calculaSaldo();
 
-    // public Long retornaTrabalhada(Long saida, Long entrada){
-    //     return saida - entrada;
+        if (calculaHorasTrabalhadas().compareTo(cargaHoraria) >= 0){
+            s.append("Credito: ").append(saldo);
+        } else{
+            s.append("Débito: ").append(saldo);
+        }
+
+        return s.toString();
+    }
+
+    public Duration calculaIntervalo(){
+        Duration intervalo = Duration.ZERO;
+        Duration esseIntervalo;
+        ListIterator<Horario> i = marcacoes.listIterator();
+
+        while(i.hasNext()){
+            i.next();
+            if(i.hasNext()){
+                Horario entradaIntervalo = i.next();
+
+                if(i.hasNext()){
+                    Horario saidaIntervalo = i.next();
+
+                    esseIntervalo = Duration.between(entradaIntervalo.getMarcacao(), saidaIntervalo.getMarcacao());
+                    intervalo = intervalo.plus(esseIntervalo);
+                    i.previous();
+                }
+            }
+        }
+
+        return intervalo;
+    }
+
+    // public Duration calculaAdicionalNoturno(){
+    //     Duration adicionalNoturno;
     // }
+}
     
 

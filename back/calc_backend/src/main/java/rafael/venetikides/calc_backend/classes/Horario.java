@@ -1,18 +1,18 @@
 package rafael.venetikides.calc_backend.classes;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class Horario implements Comparable<Horario>{
-    LocalTime hora;
-    LocalDate data;
+    LocalDateTime marcacao;
 
     /*
      * Construtor da classe Horario para a hora e dia atual
      * Define um horario marcado
      */
     public Horario(){
-        this.hora = LocalTime.now();
-        this.data = LocalDate.now();
+        this.marcacao = LocalDateTime.now();
     }
 
     /*
@@ -20,8 +20,7 @@ public class Horario implements Comparable<Horario>{
      * @param hora hora deinida no horario
      */
     public Horario(LocalTime hora){
-        this.hora = hora;
-        this.data = LocalDate.now();
+        this.marcacao = LocalDateTime.of(LocalDate.now(), hora);
     }
 
     /*
@@ -29,8 +28,7 @@ public class Horario implements Comparable<Horario>{
      * @param data dia definido no horario
      */
     public Horario(LocalDate data){
-        this.hora = LocalTime.now();
-        this.data = data;
+        this.marcacao = LocalDateTime.of(data, LocalTime.now());
     }
 
     /*
@@ -39,39 +37,49 @@ public class Horario implements Comparable<Horario>{
      * @param data dia definido no horario
      */
     public Horario(LocalTime hora, LocalDate data){
-        this.hora = hora;
-        this.data = data;
+        this.marcacao = LocalDateTime.of(data, hora);
+    }
+
+    public Horario(LocalDateTime m){
+        this.marcacao = m;
+    }
+
+    public LocalDateTime getMarcacao() {
+        return marcacao;
+    }
+
+    public void setMarcacao(LocalDateTime marcacao) {
+        this.marcacao = marcacao;
     }
 
     public LocalTime getHora() {
-        return hora;
+        return marcacao.toLocalTime();
     }
 
     public void setHora(LocalTime hora) {
-        this.hora = hora;
+        this.marcacao = marcacao.with(hora);
     }
 
     public LocalDate getData() {
-        return data;
+        return marcacao.toLocalDate();
     }
 
     public void setData(LocalDate data) {
-        this.data = data;
+        this.marcacao = marcacao.with(data);
     }
 
     @Override
     public int compareTo(Horario o) {
-        if(this.data.compareTo(o.getData()) == 0){
-            return this.hora.compareTo(o.getHora());
-        }
-        else{
-            return this.data.compareTo(o.getData());
-        }
+        return marcacao.compareTo(o.getMarcacao());
     }
 
-    @Override
-    public String toString() {
-        return hora.toString();
+    public String hourToString() {
+        return getHora().toString();
+    }
+
+    public String dataToString(){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM");
+        return getData().format(formatter);
     }
     
 }
