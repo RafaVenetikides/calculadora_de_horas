@@ -163,16 +163,22 @@ public class Periodo implements Iterable<Horario>{
     }
 
     public Duration calculaAdicionalNoturno(){
-        Duration adicionalNoturno = Duration.ZERO;
+        Duration tempoNoturno = Duration.ZERO;
         ListIterator<Horario> i = marcacoes.listIterator();
 
         while(i.hasNext()){
             Horario h1 = i.next();
             if(h1.getMarcacao().isAfter(LocalDateTime.of(h1.getData(), LocalTime.of(22, 0)))){
-                System.out.println(h1.toString());
-                adicionalNoturno = adicionalNoturno.plus(Duration.between(LocalDateTime.of(h1.getData(), LocalTime.of(22,0)), h1.getMarcacao()));
+                tempoNoturno = tempoNoturno.plus(Duration.between(LocalDateTime.of(h1.getData(), LocalTime.of(22,0)), h1.getMarcacao()));
             }
         }
+
+        Integer horasNoturnas = (int) (tempoNoturno.toMinutes() / 52.5f) * 60;
+        Float minutosNoturnos = (tempoNoturno.toMinutes() % 52.5f);
+        Long horarioNoturno = (long) (horasNoturnas + minutosNoturnos);
+
+        Duration adicionalNoturno = Duration.ofMinutes(horarioNoturno);
+
         return adicionalNoturno;
     }
 }
