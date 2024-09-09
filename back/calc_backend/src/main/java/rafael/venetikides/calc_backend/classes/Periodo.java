@@ -1,6 +1,7 @@
 package rafael.venetikides.calc_backend.classes;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -161,9 +162,19 @@ public class Periodo implements Iterable<Horario>{
         return intervalo;
     }
 
-    // public Duration calculaAdicionalNoturno(){
-    //     Duration adicionalNoturno;
-    // }
+    public Duration calculaAdicionalNoturno(){
+        Duration adicionalNoturno = Duration.ZERO;
+        ListIterator<Horario> i = marcacoes.listIterator();
+
+        while(i.hasNext()){
+            Horario h1 = i.next();
+            if(h1.getMarcacao().isAfter(LocalDateTime.of(h1.getData(), LocalTime.of(22, 0)))){
+                System.out.println(h1.toString());
+                adicionalNoturno = adicionalNoturno.plus(Duration.between(LocalDateTime.of(h1.getData(), LocalTime.of(22,0)), h1.getMarcacao()));
+            }
+        }
+        return adicionalNoturno;
+    }
 }
     
 

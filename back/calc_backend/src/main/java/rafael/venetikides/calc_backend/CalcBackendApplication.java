@@ -21,13 +21,13 @@ public class CalcBackendApplication {
 
 		// System.out.println(periodo);
 
-		periodo.addMarcacao(8, 0, 7, 9, 2024);
+		periodo.addMarcacao(17, 0, 7, 9, 2024);
 
-		periodo.addMarcacao(12, 0, 7, 9, 2024);
+		periodo.addMarcacao(22, 30, 7, 9, 2024);
 
-		periodo.addMarcacao(13, 0, 7, 9, 2024);
+		periodo.addMarcacao(23, 0, 7, 9, 2024);
 
-		periodo.addMarcacao(18, 0, 7, 9, 2024);
+		periodo.addMarcacao(3, 0, 8, 9, 2024);
 
 		periodo.ordenaPeriodo();
 
@@ -36,6 +36,7 @@ public class CalcBackendApplication {
 		System.out.println(periodo.calculaHorasTrabalhadas());
 		System.out.println(periodo.getSaldo());
 		System.out.println("Intervalo: " + periodo.calculaIntervalo());
+		System.out.println("Adicional Noturno: " + periodo.calculaAdicionalNoturno());
 	}
 
 }

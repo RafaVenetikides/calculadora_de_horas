@@ -73,6 +73,12 @@ public class Horario implements Comparable<Horario>{
         return marcacao.compareTo(o.getMarcacao());
     }
 
+    @Override
+    public String toString(){
+        StringBuilder s = new StringBuilder();
+        return s.append(hourToString()).append(" [").append(dataToString()).append("] ").toString();
+    }
+
     public String hourToString() {
         return getHora().toString();
     }
