@@ -23,10 +23,6 @@ public class Periodo implements Iterable<Horario>{
         this.tolerance = Duration.ofMinutes(10);
     }
 
-    
-    /** 
-     * @return ArrayList<Horario>
-     */
     public ArrayList<Horario> getMarcacoes() {
         return marcacoes;
     }
@@ -57,6 +53,9 @@ public class Periodo implements Iterable<Horario>{
 		return new Horario(m);
     }
 
+    /*
+     * Ordena os valores de acordo com o dia e hora da marcação
+     */
     public void ordenaPeriodo(){
         Collections.sort(marcacoes);
     }
@@ -66,6 +65,9 @@ public class Periodo implements Iterable<Horario>{
         return marcacoes.iterator();
     }
 
+    /*
+     * toString() para impressão no terminal
+     */
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
@@ -93,6 +95,10 @@ public class Periodo implements Iterable<Horario>{
         return s.toString();
     }
 
+    /*
+     * Calcula as horas trabalhadas de acordo com as marcações
+     * Serão somente calculadas as horas trabalhadas em períodos fechados, com entrada e saída
+     */
     public Duration calculaHorasTrabalhadas(){
 
         Iterator<Horario> i = iterator();
@@ -112,6 +118,11 @@ public class Periodo implements Iterable<Horario>{
         return horasTrabalhadas;
     }
     
+    /*
+     * Calcula o Saldo de horas respeitando a tolerância de 10 minutos.
+     * Caso tenha até 10 minutos a mais ou a menos, retorna a carga horária
+     * Se tiver feito hora extra ou estar devendo horas, calcula esse valor e retorna
+     */
     public Duration calculaSaldo(){
         Duration horasTrabalhadas = calculaHorasTrabalhadas();
 
@@ -126,6 +137,9 @@ public class Periodo implements Iterable<Horario>{
         }
     }
 
+    /*
+     * Utiliza o valor calculado de calculaSaldo() para retornar se foi um crédito ou um Débito
+     */
     public String getSaldo(){
         StringBuilder s = new StringBuilder();
         Duration saldo = calculaSaldo();
@@ -139,6 +153,11 @@ public class Periodo implements Iterable<Horario>{
         return s.toString();
     }
 
+    /*
+     * Calcula o tempo de intervalo
+     * Primeiro procura aonde está a saída e calcula o tempo até a próxima entrada
+     * Retorna um Duration sendo a soma de todos os intervalos
+     */
     public Duration calculaIntervalo(){
         Duration intervalo = Duration.ZERO;
         Duration esseIntervalo;
@@ -162,6 +181,13 @@ public class Periodo implements Iterable<Horario>{
         return intervalo;
     }
 
+    /*
+     * Calcula o adicional noturno
+     * verifica o quanto tempo depois das 22:00 foi feito a marcacao
+     * transforma o valor em minutos, dividindo por 52:30 para pegar as horas
+     * e utiliza o resto da divisão como minutos.
+     * Retorna uma Duration sendo a duração do adicional noturno
+     */
     public Duration calculaAdicionalNoturno(){
         Duration tempoNoturno = Duration.ZERO;
         ListIterator<Horario> i = marcacoes.listIterator();
