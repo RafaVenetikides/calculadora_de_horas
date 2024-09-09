@@ -2,6 +2,7 @@ package rafael.venetikides.calc_backend.classes;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -12,15 +13,17 @@ public class Periodo implements Iterable<Horario>{
     ArrayList<Horario> marcacoes;
     Duration cargaHoraria;
     Duration tolerance;
+    LocalDate data;
 
     /*
      * Construtor da classe de Periodos.
      * Uma lista de Horarios marcados no dia.
      */
-    public Periodo(Duration cargaHoraria){
+    public Periodo(Duration cargaHoraria, LocalDate data){
         this.marcacoes = new ArrayList<>();
         this.cargaHoraria = cargaHoraria;
         this.tolerance = Duration.ofMinutes(10);
+        this.data = data;
     }
 
     public ArrayList<Horario> getMarcacoes() {
@@ -54,7 +57,7 @@ public class Periodo implements Iterable<Horario>{
     }
 
     /*
-     * Ordena os valores de acordo com o dia e hora da marcação
+     * Ordena os valores das marcacoes de acordo com o dia e hora da marcação
      */
     public void ordenaPeriodo(){
         Collections.sort(marcacoes);
@@ -177,25 +180,35 @@ public class Periodo implements Iterable<Horario>{
                 }
             }
         }
-
+        
         return intervalo;
     }
 
     /*
      * Calcula o adicional noturno
-     * verifica o quanto tempo depois das 22:00 foi feito a marcacao
+     * verifica o quanto tempo depois das 22:00 ou antes das 5:00 do dia foi feito a marcacao
      * transforma o valor em minutos, dividindo por 52:30 para pegar as horas
      * e utiliza o resto da divisão como minutos.
      * Retorna uma Duration sendo a duração do adicional noturno
      */
+
+     // TODO: Criar a verificação de depois das 5:00 do dia seguinte ou antes das 22:00 do dia anteior
+
     public Duration calculaAdicionalNoturno(){
         Duration tempoNoturno = Duration.ZERO;
         ListIterator<Horario> i = marcacoes.listIterator();
 
         while(i.hasNext()){
             Horario h1 = i.next();
-            if(h1.getMarcacao().isAfter(LocalDateTime.of(h1.getData(), LocalTime.of(22, 0)))){
-                tempoNoturno = tempoNoturno.plus(Duration.between(LocalDateTime.of(h1.getData(), LocalTime.of(22,0)), h1.getMarcacao()));
+            if(h1.getMarcacao().isAfter(LocalDateTime.of(data, LocalTime.of(22, 0)))){
+                tempoNoturno = tempoNoturno.plus(Duration.between(LocalDateTime.of(data, LocalTime.of(22,0)), h1.getMarcacao()));
+            }
+        }
+
+        while(i.hasPrevious()){
+            Horario h2 = i.previous();
+            if(h2.getMarcacao().isBefore(LocalDateTime.of(data, LocalTime.of(5, 0)))){
+                tempoNoturno = tempoNoturno.plus(Duration.between(h2.getMarcacao(), LocalDateTime.of(data, LocalTime.of(5,0))));
             }
         }
 

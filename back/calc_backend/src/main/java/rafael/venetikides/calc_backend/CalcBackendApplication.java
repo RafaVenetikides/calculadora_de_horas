@@ -1,6 +1,7 @@
 package rafael.venetikides.calc_backend;
 
 import java.time.Duration;
+import java.time.LocalDate;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,26 +16,26 @@ public class CalcBackendApplication {
 
 		Duration cargaHoraria = Duration.ofHours(8);
 
-		Periodo periodo = new Periodo(cargaHoraria);
+		LocalDate data = LocalDate.of(2024, 9, 7);
+
+		Periodo periodo = new Periodo(cargaHoraria, data);
 
 		System.out.println("\n\n");
 
-		// System.out.println(periodo);
+		periodo.addMarcacao(4, 0, 7, 9, 2024);
 
-		periodo.addMarcacao(8, 0, 7, 9, 2024);
+		periodo.addMarcacao(12, 0, 7, 9, 2024);
 
-		periodo.addMarcacao(12, 30, 7, 9, 2024);
+		periodo.addMarcacao(19, 0, 7, 9, 2024);
 
-		periodo.addMarcacao(13, 0, 7, 9, 2024);
-
-		periodo.addMarcacao(22, 0, 8, 9, 2024);
+		periodo.addMarcacao(18, 0, 7, 9, 2024);
 
 		periodo.ordenaPeriodo();
 
 		System.out.println(periodo);
 
-		System.out.println(periodo.calculaHorasTrabalhadas());
-		System.out.println(periodo.getSaldo());
+		System.out.println("Horas trabalhadas: " + periodo.calculaHorasTrabalhadas());
+		System.out.println("Saldo: " + periodo.getSaldo());
 		System.out.println("Intervalo: " + periodo.calculaIntervalo());
 		System.out.println("Adicional Noturno: " + periodo.calculaAdicionalNoturno());
 	}
