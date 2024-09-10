@@ -1,7 +1,6 @@
 package rafael.venetikides.calc_backend;
 
 import java.time.Duration;
-import java.time.LocalDate;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,17 +15,15 @@ public class CalcBackendApplication {
 
 		Duration cargaHoraria = Duration.ofHours(8);
 
-		LocalDate data = LocalDate.of(2024, 9, 7);
-
-		Periodo periodo = new Periodo(cargaHoraria, data);
+		Periodo periodo = new Periodo(cargaHoraria);
 
 		System.out.println("\n\n");
 
-		periodo.addMarcacao(4, 0, 7, 9, 2024);
+		periodo.addMarcacao(8, 0, 7, 9, 2024);
 
 		periodo.addMarcacao(12, 0, 7, 9, 2024);
 
-		periodo.addMarcacao(19, 0, 7, 9, 2024);
+		periodo.addMarcacao(13, 0, 7, 9, 2024);
 
 		periodo.addMarcacao(18, 0, 7, 9, 2024);
 

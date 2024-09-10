@@ -2,7 +2,6 @@ package rafael.venetikides.calc_backend.classes;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -13,17 +12,15 @@ public class Periodo implements Iterable<Horario>{
     ArrayList<Horario> marcacoes;
     Duration cargaHoraria;
     Duration tolerance;
-    LocalDate data;
 
     /*
      * Construtor da classe de Periodos.
      * Uma lista de Horarios marcados no dia.
      */
-    public Periodo(Duration cargaHoraria, LocalDate data){
+    public Periodo(Duration cargaHoraria){
         this.marcacoes = new ArrayList<>();
         this.cargaHoraria = cargaHoraria;
         this.tolerance = Duration.ofMinutes(10);
-        this.data = data;
     }
 
     public ArrayList<Horario> getMarcacoes() {
@@ -192,32 +189,42 @@ public class Periodo implements Iterable<Horario>{
      * Retorna uma Duration sendo a duração do adicional noturno
      */
 
-     // TODO: Criar a verificação de depois das 5:00 do dia seguinte ou antes das 22:00 do dia anteior
-
-    public Duration calculaAdicionalNoturno(){
+    public Duration calculaAdicionalNoturno() {
         Duration tempoNoturno = Duration.ZERO;
+        LocalTime inicioNoturno = LocalTime.of(22, 0);
+        LocalTime fimNoturno = LocalTime.of(5, 0);
+        
         ListIterator<Horario> i = marcacoes.listIterator();
-
-        while(i.hasNext()){
-            Horario h1 = i.next();
-            if(h1.getMarcacao().isAfter(LocalDateTime.of(data, LocalTime.of(22, 0)))){
-                tempoNoturno = tempoNoturno.plus(Duration.between(LocalDateTime.of(data, LocalTime.of(22,0)), h1.getMarcacao()));
+    
+        while (i.hasNext()) {
+            Horario entrada = i.next();
+            if (i.hasNext()) {
+                Horario saida = i.next();
+    
+                LocalDateTime inicioJornada = entrada.getMarcacao();
+                LocalDateTime fimJornada = saida.getMarcacao();
+    
+                if (inicioJornada.toLocalTime().isBefore(fimNoturno) || fimJornada.toLocalTime().isAfter(inicioNoturno)) {
+                    
+                    if (inicioJornada.toLocalTime().isBefore(inicioNoturno) && inicioJornada.toLocalTime().isAfter(fimNoturno)) {
+                        inicioJornada = LocalDateTime.of(inicioJornada.toLocalDate(), inicioNoturno);
+                    }
+    
+                    if (fimJornada.toLocalTime().isAfter(fimNoturno) && fimJornada.toLocalTime().isBefore(inicioNoturno)) {
+                        fimJornada = LocalDateTime.of(fimJornada.toLocalDate(), fimNoturno);
+                    }
+    
+                    Duration duracaoJornada = Duration.between(inicioJornada, fimJornada);
+                    tempoNoturno = tempoNoturno.plus(duracaoJornada);
+                }
             }
         }
-
-        while(i.hasPrevious()){
-            Horario h2 = i.previous();
-            if(h2.getMarcacao().isBefore(LocalDateTime.of(data, LocalTime.of(5, 0)))){
-                tempoNoturno = tempoNoturno.plus(Duration.between(h2.getMarcacao(), LocalDateTime.of(data, LocalTime.of(5,0))));
-            }
-        }
-
+    
         Integer horasNoturnas = (int) (tempoNoturno.toMinutes() / 52.5f) * 60;
         Float minutosNoturnos = (tempoNoturno.toMinutes() % 52.5f);
         Long horarioNoturno = (long) (horasNoturnas + minutosNoturnos);
-
         Duration adicionalNoturno = Duration.ofMinutes(horarioNoturno);
-
+    
         return adicionalNoturno;
     }
 }
