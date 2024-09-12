@@ -218,37 +218,54 @@ public class Periodo implements Iterable<Horario>{
                         tempoNoturno = tempoNoturno.plus(Duration.between(inicioJornada, fimNoturno));
                     }
 
-                    // Caso 1.3: a jornada termina depois das 22:00
-                    else if(fimJornada.toLocalTime().isAfter(inicioNoturno)){
+                    // Caso 1.3: a jornada termina depois das 22:00 ou antes do início da jornada(outro dia)
+                    else if(fimJornada.toLocalTime().isAfter(inicioNoturno) || fimJornada.toLocalTime().isBefore(inicioJornada.toLocalTime())){
                         tempoNoturno = tempoNoturno.plus(Duration.between(inicioJornada, fimNoturno));
                         tempoNoturno = tempoNoturno.plus(Duration.between(inicioNoturno, fimJornada));
                     }
-
-                    else if(fimJornada.toLocalTime().isBefore(fimNoturno)){}
                 }
 
                 // Caso 2: A jornada se inicia antes das 22:00
                 else if(inicioJornada.toLocalTime().isBefore(inicioNoturno)){
 
                     // Caso 2.0: A jornada termina antes das 22:00
-                    if(fimJornada.toLocalTime().isBefore(inicioNoturno)){
+                    if(fimJornada.toLocalTime().isBefore(inicioNoturno) && fimJornada.toLocalTime().isAfter(fimNoturno)){
                         continue;
                     }
-
-                    // Caso 2.1: A jornada termina antes das 5:00
-                    if(fimJornada.toLocalTime().isBefore(fimNoturno)){
+                    
+                    // Caso 2.1: A jornada termina depois das 22:00 e antes das 5:00
+                    if(fimJornada.toLocalTime().isAfter(inicioNoturno) || fimJornada.toLocalTime().isBefore(fimNoturno) || fimJornada.toLocalTime().equals(fimNoturno)){
                         tempoNoturno = tempoNoturno.plus(Duration.between(inicioNoturno, fimJornada));
                     }
-
+                    
                     // Caso 2.2: A jornada termina depois das 5:00
                     else if(fimJornada.toLocalTime().isAfter(fimNoturno)){
                         tempoNoturno = tempoNoturno.plus(Duration.between(inicioNoturno, fimNoturno));
                     }
                 }
-            }
+
+                // Caso 3: A jornada se inicia depois das 22:00
+                else if(inicioJornada.toLocalTime().equals(inicioNoturno) || inicioJornada.toLocalTime().isAfter(inicioNoturno)){
+
+                    // Caso 3.1: A jornada termina antes das 5:00
+                    if(fimJornada.toLocalTime().isAfter(inicioNoturno) || fimJornada.toLocalTime().isBefore(fimNoturno)){
+                        tempoNoturno = tempoNoturno.plus(Duration.between(inicioJornada, fimJornada));
+                    }
+
+                    // Caso 3.2: A jornada termina depois das 5:00
+                    else if(fimJornada.toLocalTime().isAfter(fimNoturno) || fimJornada.toLocalTime().equals(fimNoturno)){
+                        tempoNoturno = tempoNoturno.plus(Duration.between(inicioJornada.toLocalTime(), fimNoturno));
+                    }
+
+                    // Caso 3.3: A jornada termina depois das 22:00
+                    else if(fimJornada.toLocalTime().isAfter(fimNoturno)){
+                        tempoNoturno = tempoNoturno.plus(Duration.between(inicioJornada, fimNoturno));
+                        tempoNoturno = tempoNoturno.plus(Duration.between(inicioNoturno, fimJornada));
+                    }
+                }
             
-        }
-        
+            }
+        }        
 
         Integer horasNoturnas = (int) (tempoNoturno.toMinutes() / 52.5f) * 60;
         Float minutosNoturnos = (tempoNoturno.toMinutes() % 52.5f);
@@ -257,8 +274,6 @@ public class Periodo implements Iterable<Horario>{
     
         return adicionalNoturno;
     }
-            
-    
 }
     
 
