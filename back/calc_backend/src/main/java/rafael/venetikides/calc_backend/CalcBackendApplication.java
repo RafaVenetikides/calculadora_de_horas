@@ -19,9 +19,8 @@ public class CalcBackendApplication {
 
 		System.out.println("\n\n");
 
-		periodo.addMarcacao(16, 0, 7, 9, 2024);
-		periodo.addMarcacao(23, 0, 8, 9, 2024);
-
+		periodo.addMarcacao(23, 0);
+		periodo.addMarcacao(15, 0);
 		periodo.ordenaPeriodo();
 
 		System.out.println(periodo);
