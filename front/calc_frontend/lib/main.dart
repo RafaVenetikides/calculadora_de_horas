@@ -1,138 +1,194 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 void main() {
-  runApp(const MainApp());
+  runApp(MyApp());
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "Calculadora de Horas",
+      title: 'Calculadora de Ponto',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
         primarySwatch: Colors.blue,
-        useMaterial3: true,
       ),
-      home: HomePage(),
+      home: PontoPage(),
     );
   }
-
 }
 
-  class HomePage extends StatefulWidget{
-    @override
-    _HomePageState createState() => _HomePageState();
+class PontoPage extends StatefulWidget {
+  @override
+  _PontoPageState createState() => _PontoPageState();
+}
+
+class _PontoPageState extends State<PontoPage> {
+  final TextEditingController _cargaHorariaController = TextEditingController();
+  final List<TextEditingController> _marcacoesControllers = [
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController()
+  ];
+
+  Map<String, dynamic> _calculos = {};
+
+  void _adicionarMarcacao() {
+    setState(() {
+      _marcacoesControllers.add(TextEditingController());
+    });
   }
 
-  class _HomePageState extends State<HomePage>{
-    final TextEditingController cargaHorariaController = TextEditingController();
-    final TextEditingController marcacaoController = TextEditingController();
+  Future<void> _calcular() async {
+    final cargaHoraria = _cargaHorariaController.text;
+    final marcacoes = _marcacoesControllers
+      .map((c) => c.text)
+      .where((marcacao) => marcacao.isNotEmpty)
+      .toList();
+    print(marcacoes);
 
-    String horasTrabalhadas = "99:45";
-    String debito = "13:25";
-    String credito = "28:12";
-    String horasNormais = "49:25";
-    String adicionalNoturno = "25:25";
-    String intervalo = "00:30";
+    final response = await http.post(
+      Uri.parse('http://localhost:8080/api/v1/periodo/calcular'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'cargaHoraria': cargaHoraria,
+        'marcacoes': marcacoes,
+      }),
+    );
 
-    @override
+    if (response.statusCode == 200) {
+      setState(() {
+        _calculos = jsonDecode(response.body);
+      });
+    } else {
+      // Handle error
+      setState(() {
+        _calculos = {'error': 'Erro ao calcular'};
+      });
+    }
+  }
+
+  void _removerUltimaMarcacao() {
+    if (_marcacoesControllers.isNotEmpty) {
+      setState(() {
+        _marcacoesControllers.removeLast();
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Calculadora de Horas"),
+        title: Text('Calculadora de Ponto'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            // Carga Horária Field
-            Row(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start, // Aligns text to the left
-                  children: [
-                    // Title/Label outside the box
-                    Text(
-                      "Carga Horária",
-                      style: TextStyle(fontSize: 16), // Customize the font size if needed
-                    ),
-                    SizedBox(height: 4), // Add some spacing between the label and the input box
-                    // Input box
-                    Container(
-                      height: 50,
-                      width: 100,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black),
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      padding: EdgeInsets.symmetric(horizontal: 8.0),
-                      child: TextFormField(
-                        controller: cargaHorariaController,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.symmetric(vertical: 10),
-                        ),
-                        keyboardType: TextInputType.number,
-                      ),
-                    ),
-                  ],
+            // Input para a carga horária
+            Align(
+              alignment: Alignment.centerLeft,  // Alinha o container à esquerda
+              child: Container(
+                width: 150,  // Definindo largura fixa
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey, width: 2),
+                  borderRadius: BorderRadius.circular(8),
                 ),
-              ],
-            ),
-            SizedBox(height: 16),
-            // Marcações Fields
-            Row(
-              children: [
-                Expanded(
-                  child: TextFormField(
-                    controller: marcacaoController,
-                    decoration: InputDecoration(labelText: "Marcação 1"),
-                    keyboardType: TextInputType.number,
+                padding: EdgeInsets.all(8),
+                child: TextFormField(
+                  controller: _cargaHorariaController,
+                  decoration: InputDecoration(
+                    labelText: 'Carga Horária',
+                    border: InputBorder.none, // Remove a borda padrão do TextFormField
                   ),
+                  keyboardType: TextInputType.datetime,
+                  textAlign: TextAlign.center,
                 ),
-                IconButton(
-                  icon: Icon(Icons.add_circle),
+              ),
+            ),
+            SizedBox(height: 20),
+            // Inputs para as marcações (em linha com quadrados ao redor)
+            Row(
+              children: List.generate(_marcacoesControllers.length, (index) {
+                return Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey, width: 2),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          controller: _marcacoesControllers[index],
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            labelText: 'Marcação ${index + 1}',
+                          ),
+                          keyboardType: TextInputType.datetime,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              }),
+            ),
+            SizedBox(height: 20),
+            // Botão para adicionar mais marcações
+             Row(
+              children: [
+                ElevatedButton(
                   onPressed: () {
-                    // Lógica para adicionar mais marcações
+                    setState(() {
+                      _marcacoesControllers.add(TextEditingController());
+                    });
                   },
+                  child: Icon(Icons.add),
+                ),
+                SizedBox(width: 10),
+                IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: _removerUltimaMarcacao,
+                  tooltip: 'Remover última marcação',
                 ),
               ],
             ),
-            SizedBox(height: 16),
-            // Botão de Calcular
+            SizedBox(height: 20),
+            // Botão de calcular
             ElevatedButton(
-              onPressed: () {
-                // Lógica para calcular os resultados
-              },
-              child: Text("CALCULAR"),
+              onPressed: _calcular,
+              child: Text('Calcular'),
             ),
-            SizedBox(height: 16),
+            SizedBox(height: 20),
             // Tabela de Resultados
-            DataTable(columns: [
-              DataColumn(label: Text('HORAS TRABALHADAS')),
-              DataColumn(label: Text('DÉBITO')),
-              DataColumn(label: Text('CRÉDITO')),
-              DataColumn(label: Text('HORAS TRABALHADAS NORMAIS')),
-              DataColumn(label: Text('ADICIONAL NOTURNO')),
-              DataColumn(label: Text('INTERVALO')),
-            ], rows: [
-              DataRow(cells: [
-                DataCell(Text(horasTrabalhadas)),
-                DataCell(Text(debito)),
-                DataCell(Text(credito)),
-                DataCell(Text(horasNormais)),
-                DataCell(Text(adicionalNoturno)),
-                DataCell(Text(intervalo)),
-              ]),
-            ]),
+            _calculos.isEmpty
+                ? Container()
+                : DataTable(
+                    columns: [
+                      DataColumn(label: Text('Horas Trabalhadas')),
+                      DataColumn(label: Text('Débito')),
+                      DataColumn(label: Text('Crédito')),
+                      DataColumn(label: Text('Adicional Noturno')),
+                      DataColumn(label: Text('Intervalo')),
+                    ],
+                    rows: [
+                      DataRow(cells: [
+                        DataCell(Text(_calculos['horasTrabalhadas'] ?? '')),
+                        DataCell(Text(_calculos['debito'] ?? '')),
+                        DataCell(Text(_calculos['credito'] ?? '')),
+                        DataCell(Text(_calculos['adicionalNoturno'] ?? '')),
+                        DataCell(Text(_calculos['intervalo'] ?? '')),
+                      ]),
+                    ],
+                  ),
           ],
         ),
       ),
     );
   }
 }
-  

@@ -48,7 +48,7 @@ public class Periodo implements Iterable<Horario>{
         int lastIndex = marcacoes.size() - 1;
         if(marcacoes.isEmpty()){
             marcacoes.add(criaHorario(hora, minuto, 1, 1, 1));
-        } else if(hora < marcacoes.get(lastIndex).getMarcacao().getHour() || (hora == marcacoes.get(lastIndex).getMarcacao().getHour() && minuto < marcacoes.get(lastIndex).getMarcacao().getMinute())){
+        } else if(hora <= marcacoes.get(lastIndex).getMarcacao().getHour() || (hora == marcacoes.get(lastIndex).getMarcacao().getHour() && minuto <= marcacoes.get(lastIndex).getMarcacao().getMinute())){
             LocalDate proximoDia = marcacoes.get(lastIndex).getMarcacao().toLocalDate().plusDays(1);
             marcacoes.add(criaHorario(hora, minuto, proximoDia.getDayOfMonth(), proximoDia.getMonthValue(), proximoDia.getYear()));
         } else{
@@ -193,10 +193,9 @@ public class Periodo implements Iterable<Horario>{
 
     /*
      * Calcula o adicional noturno
-     * Analisa as jornadas de trabalho que acontecem a noite.
-     * Caso ele perceba que a jornada passou pelo inicio ou fim noturno,
-     * arruma a marcação para calcular somente o período do noturno
-     * Retorna uma Duration sendo a duração do adicional noturno
+     * Analisa as jornadas de trabalho que acontecem em período noturno (entre 22:00 e 5:00).
+     * Passa por todas as possibilidade de marcações e calcula o tempo noturno de cada uma.
+     * Realiza a operação de cálculo de tempo noturno e retorna um Duration com o valor calculado.
      */
 
      public Duration calculaAdicionalNoturno() {
@@ -228,7 +227,7 @@ public class Periodo implements Iterable<Horario>{
                         tempoNoturno = tempoNoturno.plus(Duration.between(inicioJornada.toLocalTime(), fimNoturno));
                     }
 
-                    // Caso 1.3: A jornada cruza dois dias (primeiro dia antes das 5:00, segundo dia após 22:00)
+                    // Caso 1.3: A jornade termina no próximo horário noturno
                     else if (fimJornada.toLocalTime().isAfter(inicioNoturno) || fimJornada.toLocalTime().isBefore(inicioJornada.toLocalTime())) {
                         // Calcula o tempo noturno do primeiro dia (entre o início e as 5:00)
                         tempoNoturno = tempoNoturno.plus(Duration.between(inicioJornada, LocalDateTime.of(inicioJornada.toLocalDate(), fimNoturno)));

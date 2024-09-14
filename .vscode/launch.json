@@ -1,0 +1,41 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CalcBackendApplication",
+            "request": "launch",
+            "mainClass": "rafael.venetikides.calc_backend.CalcBackendApplication",
+            "projectName": "calc_backend"
+        },
+        {
+            "name": "calc_frontend",
+            "cwd": "front\\calc_frontend",
+            "request": "launch",
+            "type": "dart",
+            "args": [
+                "-d",
+                "chrome",
+                "--web-port",
+                "5000"
+            ]
+        },
+        {
+            "name": "calc_frontend (profile mode)",
+            "cwd": "front\\calc_frontend",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "calc_frontend (release mode)",
+            "cwd": "front\\calc_frontend",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}
