@@ -148,7 +148,8 @@ public class Periodo implements Iterable<Horario>{
     }
 
     /*
-     * Utiliza o valor calculado de calculaSaldo() para retornar se foi um crédito ou um Débito
+     * Utiliza o valor calculado de calculaSaldo() para retornar se foi um crédito ou um Débito.
+     * Utilizado no debug para saber se o saldo está correto
      */
     public String getSaldo(){
         StringBuilder s = new StringBuilder();
@@ -161,6 +162,34 @@ public class Periodo implements Iterable<Horario>{
         }
 
         return s.toString();
+    }
+
+    /*
+     * Calcula o crédito de horas
+     * Se a quantidade de horas trabalhadas for maior ou igual a carga horária, retorna o saldo
+     * Caso contrário, retorna 0
+     */
+    public Duration getCredito(){
+        Duration saldo = calculaSaldo();
+        if (calculaHorasTrabalhadas().compareTo(cargaHoraria) >= 0){
+            return saldo;
+        } else{
+            return Duration.ZERO;
+        }
+    }
+
+    /*
+     * Calcula o débito de horas
+     * Se a quantidade de horas trabalhadas for menor que a carga horária, retorna o saldo
+     * Caso contrário, retorna 0
+     */
+    public Duration getDebito(){
+        Duration saldo = calculaSaldo();
+        if (calculaHorasTrabalhadas().compareTo(cargaHoraria) < 0){
+            return saldo;
+        } else{
+            return Duration.ZERO;
+        }
     }
 
     /*
@@ -196,6 +225,7 @@ public class Periodo implements Iterable<Horario>{
      * Analisa as jornadas de trabalho que acontecem em período noturno (entre 22:00 e 5:00).
      * Passa por todas as possibilidade de marcações e calcula o tempo noturno de cada uma.
      * Realiza a operação de cálculo de tempo noturno e retorna um Duration com o valor calculado.
+     * A função poderia ter sido refatorada para ficar menor, porém optei por deixar mais legível, além de facilitar o debug.
      */
 
      public Duration calculaAdicionalNoturno() {
@@ -297,12 +327,18 @@ public class Periodo implements Iterable<Horario>{
             }
         }        
 
-        Integer horasNoturnas = (int) (tempoNoturno.toMinutes() / 52.5f) * 60;
-        Float minutosNoturnos = (tempoNoturno.toMinutes() % 52.5f);
-        Long horarioNoturno = (long) (horasNoturnas + minutosNoturnos);
-        Duration adicionalNoturno = Duration.ofMinutes(horarioNoturno);
-    
-        return adicionalNoturno;
+        Integer totalMinutosNoturnos = (int) tempoNoturno.toMinutes();        
+        double horasEquivalentes = totalMinutosNoturnos / 52.5;
+        long minutosAdicionalNoturno = (long) (horasEquivalentes * 60);
+
+        return Duration.ofMinutes(minutosAdicionalNoturno);
+    }
+
+    public static String durationToString(Duration duration){
+        long totalMinutes = duration.toMinutes();
+        long hours = totalMinutes / 60;
+        long minutes = totalMinutes % 60;
+        return String.format("%02d:%02d", hours, minutes);
     }
 }
     

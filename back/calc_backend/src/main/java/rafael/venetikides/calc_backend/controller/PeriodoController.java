@@ -71,15 +71,15 @@ public class PeriodoController {
         Periodo periodo = new Periodo(parseDuration(cargaHoraria));
         for (String marcacao : marcacoes) {
             String[] time = marcacao.split(":");
-            periodo.addMarcacao(Integer.parseInt(time[0]), Integer.parseInt(time[1]));
+            periodo.addMarcacao(Integer.valueOf(time[0]), Integer.valueOf(time[1]));
         }
 
         Map<String, String> resultados = new HashMap<>();
-        resultados.put("horasTrabalhadas", periodo.calculaHorasTrabalhadas().toString());
-        resultados.put("debito", periodo.calculaSaldo().toString());
-        resultados.put("credito", periodo.calculaSaldo().toString());
-        resultados.put("adicionalNoturno", periodo.calculaAdicionalNoturno().toString());
-        resultados.put("intervalo", periodo.calculaIntervalo().toString());
+        resultados.put("horasTrabalhadas", Periodo.durationToString(periodo.calculaHorasTrabalhadas()));
+        resultados.put("debito", Periodo.durationToString(periodo.getDebito()));
+        resultados.put("credito", Periodo.durationToString(periodo.getCredito()));
+        resultados.put("adicionalNoturno", Periodo.durationToString(periodo.calculaAdicionalNoturno()));
+        resultados.put("intervalo", Periodo.durationToString(periodo.calculaIntervalo()));
 
         return ResponseEntity.ok(resultados);
     }
