@@ -1,0 +1,10 @@
+D:/Users/Rafael/Desktop/calculadora_de_horas/front/calc_frontend/build/windows/x64/CMakeFiles/INSTALL.dir
+D:/Users/Rafael/Desktop/calculadora_de_horas/front/calc_frontend/build/windows/x64/CMakeFiles/ALL_BUILD.dir
+D:/Users/Rafael/Desktop/calculadora_de_horas/front/calc_frontend/build/windows/x64/CMakeFiles/ZERO_CHECK.dir
+D:/Users/Rafael/Desktop/calculadora_de_horas/front/calc_frontend/build/windows/x64/flutter/CMakeFiles/flutter_wrapper_plugin.dir
+D:/Users/Rafael/Desktop/calculadora_de_horas/front/calc_frontend/build/windows/x64/flutter/CMakeFiles/flutter_wrapper_app.dir
+D:/Users/Rafael/Desktop/calculadora_de_horas/front/calc_frontend/build/windows/x64/flutter/CMakeFiles/flutter_assemble.dir
+D:/Users/Rafael/Desktop/calculadora_de_horas/front/calc_frontend/build/windows/x64/flutter/CMakeFiles/INSTALL.dir
+D:/Users/Rafael/Desktop/calculadora_de_horas/front/calc_frontend/build/windows/x64/runner/CMakeFiles/calc_frontend.dir
+D:/Users/Rafael/Desktop/calculadora_de_horas/front/calc_frontend/build/windows/x64/runner/CMakeFiles/INSTALL.dir
+D:/Users/Rafael/Desktop/calculadora_de_horas/front/calc_frontend/build/windows/x64/runner/CMakeFiles/ALL_BUILD.dir

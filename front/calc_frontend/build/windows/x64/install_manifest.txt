@@ -1,0 +1,11 @@
+D:/Users/Rafael/Desktop/calculadora_de_horas/front/calc_frontend/build/windows/x64/runner/Debug/data/icudtl.dat
+D:/Users/Rafael/Desktop/calculadora_de_horas/front/calc_frontend/build/windows/x64/runner/Debug/flutter_windows.dll
+D:/Users/Rafael/Desktop/calculadora_de_horas/front/calc_frontend/build/windows/x64/runner/Debug/data/flutter_assets/AssetManifest.bin
+D:/Users/Rafael/Desktop/calculadora_de_horas/front/calc_frontend/build/windows/x64/runner/Debug/data/flutter_assets/AssetManifest.bin.json
+D:/Users/Rafael/Desktop/calculadora_de_horas/front/calc_frontend/build/windows/x64/runner/Debug/data/flutter_assets/AssetManifest.json
+D:/Users/Rafael/Desktop/calculadora_de_horas/front/calc_frontend/build/windows/x64/runner/Debug/data/flutter_assets/FontManifest.json
+D:/Users/Rafael/Desktop/calculadora_de_horas/front/calc_frontend/build/windows/x64/runner/Debug/data/flutter_assets/fonts/MaterialIcons-Regular.otf
+D:/Users/Rafael/Desktop/calculadora_de_horas/front/calc_frontend/build/windows/x64/runner/Debug/data/flutter_assets/kernel_blob.bin
+D:/Users/Rafael/Desktop/calculadora_de_horas/front/calc_frontend/build/windows/x64/runner/Debug/data/flutter_assets/NOTICES
+D:/Users/Rafael/Desktop/calculadora_de_horas/front/calc_frontend/build/windows/x64/runner/Debug/data/flutter_assets/NOTICES.Z
+D:/Users/Rafael/Desktop/calculadora_de_horas/front/calc_frontend/build/windows/x64/runner/Debug/data/flutter_assets/shaders/ink_sparkle.frag

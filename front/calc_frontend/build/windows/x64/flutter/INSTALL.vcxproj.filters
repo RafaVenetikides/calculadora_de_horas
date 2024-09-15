@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="D:\Users\Rafael\Desktop\calculadora_de_horas\front\calc_frontend\build\windows\x64\CMakeFiles\d52a82f81610411ebddd614ebb98af37\INSTALL_force.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{D05C0F18-F803-346A-805E-632948637884}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

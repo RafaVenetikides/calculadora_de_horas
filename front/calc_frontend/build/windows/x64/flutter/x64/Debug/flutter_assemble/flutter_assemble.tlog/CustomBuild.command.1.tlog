@@ -1,0 +1,28 @@
+^D:\USERS\RAFAEL\DESKTOP\CALCULADORA_DE_HORAS\FRONT\CALC_FRONTEND\BUILD\WINDOWS\X64\CMAKEFILES\B133E32C733EF64C1D0576899CB15381\FLUTTER_WINDOWS.DLL.RULE
+setlocal
+"C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E env FLUTTER_ROOT=D:\Softwares\flutter\flutter PROJECT_DIR=D:\Users\Rafael\Desktop\calculadora_de_horas\front\calc_frontend FLUTTER_ROOT=D:\Softwares\flutter\flutter FLUTTER_EPHEMERAL_DIR=D:\Users\Rafael\Desktop\calculadora_de_horas\front\calc_frontend\windows\flutter\ephemeral PROJECT_DIR=D:\Users\Rafael\Desktop\calculadora_de_horas\front\calc_frontend FLUTTER_TARGET=D:\Users\Rafael\Desktop\calculadora_de_horas\front\calc_frontend\lib\main.dart DART_OBFUSCATION=false TRACK_WIDGET_CREATION=true TREE_SHAKE_ICONS=false PACKAGE_CONFIG=D:\Users\Rafael\Desktop\calculadora_de_horas\front\calc_frontend\.dart_tool\package_config.json D:/Softwares/flutter/flutter/packages/flutter_tools/bin/tool_backend.bat windows-x64 Debug
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^D:\USERS\RAFAEL\DESKTOP\CALCULADORA_DE_HORAS\FRONT\CALC_FRONTEND\BUILD\WINDOWS\X64\CMAKEFILES\D52A82F81610411EBDDD614EBB98AF37\FLUTTER_ASSEMBLE.RULE
+setlocal
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^D:\USERS\RAFAEL\DESKTOP\CALCULADORA_DE_HORAS\FRONT\CALC_FRONTEND\WINDOWS\FLUTTER\CMAKELISTS.TXT
+setlocal
+"C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SD:/Users/Rafael/Desktop/calculadora_de_horas/front/calc_frontend/windows -BD:/Users/Rafael/Desktop/calculadora_de_horas/front/calc_frontend/build/windows/x64 --check-stamp-file D:/Users/Rafael/Desktop/calculadora_de_horas/front/calc_frontend/build/windows/x64/flutter/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

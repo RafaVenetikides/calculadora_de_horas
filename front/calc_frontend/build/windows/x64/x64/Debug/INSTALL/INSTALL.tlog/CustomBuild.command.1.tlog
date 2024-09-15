@@ -1,0 +1,10 @@
+^D:\USERS\RAFAEL\DESKTOP\CALCULADORA_DE_HORAS\FRONT\CALC_FRONTEND\BUILD\WINDOWS\X64\CMAKEFILES\FB0B349BE6FE55E3D3650FA92936B229\INSTALL_FORCE.RULE
+setlocal
+cd .
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

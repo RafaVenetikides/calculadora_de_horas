@@ -1,0 +1,10 @@
+^D:\USERS\RAFAEL\DESKTOP\CALCULADORA_DE_HORAS\FRONT\CALC_FRONTEND\BUILD\WINDOWS\X64\CMAKEFILES\FB0B349BE6FE55E3D3650FA92936B229\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SD:/Users/Rafael/Desktop/calculadora_de_horas/front/calc_frontend/windows -BD:/Users/Rafael/Desktop/calculadora_de_horas/front/calc_frontend/build/windows/x64 --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file D:/Users/Rafael/Desktop/calculadora_de_horas/front/calc_frontend/build/windows/x64/calc_frontend.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
